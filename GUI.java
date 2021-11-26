@@ -1,8 +1,15 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.xml.namespace.QName;
+
+import org.w3c.dom.css.RGBColor;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 
 /* NOTES
@@ -17,15 +24,29 @@ import java.awt.event.ActionListener;
  * ************************ */ 
 public class GUI implements java.awt.event.ActionListener {
 
-    //rezizable
-    public boolean canrezize = false;
-    //-------
+    //--------------rezisable---------------//
+        public boolean canrezize = false;
+    //--------------------------------------//
 
+
+    private String currentPage;
+    
+    //Swing components
     private int preis = 5;
+    private int money = 50;
     private JFrame frame;
     private JLabel desc;
     private JPanel panel;
+    private JButton button;
     private ButtonGroup auswahlgruppe = new ButtonGroup();
+    private ButtonGroup zeitgruppe = new ButtonGroup();
+    private JPanel alignRadio;
+    private JPanel alignTimes;
+
+    //colors
+    private Color cconfirm = new Color(157, 255, 156);
+    private Color cnotready = new Color(255, 116, 82);
+    private Color cerror = new Color(89, 40, 40);
     
 
 
@@ -33,14 +54,22 @@ public class GUI implements java.awt.event.ActionListener {
         //creates Window        
         frame = new JFrame();
         
-        JButton button = new JButton("Jetzt Kaufen");
+        button = new JButton("Jetzt Kaufen");
         button.addActionListener(new Kauf());
+        button.setBackground(cnotready);
+        currentPage = "Klasse1";
 
         JButton ClassOne = new JButton("Ticket Klasse 1");
         ClassOne.addActionListener(new TriggerClassOne());
 
         JButton ClassTwo = new JButton("Ticket Klasse 2");
         ClassTwo.addActionListener(new TriggerClassTwo());
+
+        JButton ClassThree = new JButton("Ticket Klasse 3");
+        ClassThree.addActionListener(new TriggerClassThree());
+
+        JButton ClassFour = new JButton("Langzeittickets");
+        ClassFour.addActionListener(new TriggerClassTimed());
 
         //desription text
         desc = new JLabel("<html>Bitte wählen sie eine Klasse<br/>und Art aus.<br/>Hello world<html/>");
@@ -60,34 +89,77 @@ public class GUI implements java.awt.event.ActionListener {
         leftPanel.add(auswahl);
         
             //Radio Buttons
-            JPanel alignRadio = new JPanel();
+            alignRadio = new JPanel();
             JRadioButton one = new JRadioButton("Einzelticket");
             JRadioButton two = new JRadioButton("4er Ticket");
             JRadioButton three = new JRadioButton("Gruppen Ticket (6 Personen)");
+            JRadioButton four = new JRadioButton("<html>Familienticket<br/>(2 Erwachsene, 1 Kind)<html/>");
+
+            JRadioButton day = new JRadioButton("Tagesticket", true);
+            JRadioButton week = new JRadioButton("Wochenticket");
+            JRadioButton month = new JRadioButton("Monatsticket");
+            JRadioButton year = new JRadioButton("Jahresticket");
+
+            
             //auswahlgruppe = new ButtonGroup();
             auswahlgruppe.add(one);
             auswahlgruppe.add(two);
             auswahlgruppe.add(three);
+            auswahlgruppe.add(four);
+
+            one.addChangeListener(new NormalChanged());
+            two.addChangeListener(new NormalChanged());
+            three.addChangeListener(new NormalChanged());
+            four.addChangeListener(new NormalChanged());
+
+            zeitgruppe.add(day);
+            zeitgruppe.add(week);
+            zeitgruppe.add(month);
+            zeitgruppe.add(year);
+
+            alignTimes = new JPanel();
+            alignTimes.setLayout(new GridLayout(5, 1));
+            alignTimes.add(day);
+            alignTimes.add(week);
+            alignTimes.add(month);
+            alignTimes.add(year);
 
             one.setSelected(true);
             one.setActionCommand("einzel");
-            two.setActionCommand("4");
+            two.setActionCommand("vier");
             three.setActionCommand("gruppe");
+            four.setActionCommand("family");
+
+            day.addChangeListener(new TimedFocus());
+            week.addChangeListener(new TimedFocus());
+            month.addChangeListener(new TimedFocus());
+            year.addChangeListener(new TimedFocus());
+
+            day.setActionCommand("day");
+            week.setActionCommand("week");
+            month.setActionCommand("month");
+            year.setActionCommand("year");
 
             alignRadio.setLayout(new GridLayout(5, 1));
             alignRadio.add(one);
             alignRadio.add(two);
             alignRadio.add(three);
+            alignRadio.add(four);
 
         leftPanel.add(alignRadio, BorderLayout.WEST);
+        leftPanel.add(alignTimes, BorderLayout.WEST);
+        alignTimes.setVisible(false);
 
         //Top Bar
         JPanel topPanel = new JPanel();
         JPanel alignTop = new JPanel();
         alignTop.add(ClassOne);
         alignTop.add(ClassTwo);
-        topPanel.setBackground(Color.LIGHT_GRAY);
-        alignTop.setBackground(Color.LIGHT_GRAY);
+        alignTop.add(ClassThree);
+        alignTop.add(ClassFour);
+        Color lightBlue = new Color(54, 168, 255);
+        topPanel.setBackground(lightBlue);
+        alignTop.setBackground(lightBlue);
         topPanel.add(alignTop, BorderLayout.CENTER);
         topPanel.setPreferredSize(new Dimension(800, 50));
 
@@ -158,7 +230,12 @@ public class GUI implements java.awt.event.ActionListener {
     //Klasse 1
     class TriggerClassOne implements ActionListener {
         public void actionPerformed(ActionEvent e){
-            
+            currentPage = "Klasse1";
+            button.setBackground(cconfirm);
+            ShowPanel(panel);
+            alignRadio.setVisible(true);
+            alignTimes.setVisible(false);
+            desc.setText("<html><h1>Klasse 1 Ticket</h1><br/>4 Stationen Fahren<br/>Preis 4€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 1 Ticket<br/>ganz einfach und günsitg<br/>bis zu 4 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
         }
 
     }
@@ -166,10 +243,124 @@ public class GUI implements java.awt.event.ActionListener {
     //Klasse 2
     class TriggerClassTwo implements java.awt.event.ActionListener {
         public void actionPerformed(ActionEvent e){
+            currentPage = "Klasse2";
+            button.setBackground(cconfirm);
             ShowPanel(panel);
-            
+            alignRadio.setVisible(true);
+            alignTimes.setVisible(false);
+            desc.setText("<html><h1>Klasse 2 Ticket</h1><br/>Bis zu 8 Stationen Fahren<br/>Preis 6,50€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 2 Ticket<br/>ganz einfach und günsitg<br/>bis zu 8 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
         }
 
+    }
+
+    //Klasse 3
+    class TriggerClassThree implements java.awt.event.ActionListener {
+        public void actionPerformed(ActionEvent e){
+            currentPage = "Klasse3";
+            button.setBackground(cconfirm);
+            ShowPanel(panel);
+            alignRadio.setVisible(true);
+            alignTimes.setVisible(false);
+            desc.setText("<html><h1>Klasse 3 Ticket</h1><br/>Bis zu 15 Stationen Fahren<br/>Preis 9,99€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 3 Ticket<br/>ganz einfach und günsitg<br/>bis zu 15 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+        }
+
+    }
+
+    //Langzeitticket
+    class TriggerClassTimed implements java.awt.event.ActionListener {
+        public void actionPerformed(ActionEvent e){
+            currentPage = "KlasseTimed";
+            button.setBackground(cconfirm);
+            ShowPanel(panel);
+            desc.setText("<html><h1>Langzeittickets</h1><br/>Bitte auswählen<html/>");
+            alignRadio.setVisible(false);
+            alignTimes.setVisible(true);
+
+            switch(zeitgruppe.getSelection().getActionCommand()){
+                case "day":
+                    desc.setText("<html><h1>Tagesticket</h1><br/>Einen ganzen Tag Gültig<br/>Preis 14,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Tagesticket fahren sie<br/>ganz einfach und günsitg<br/>den ganzen tag lang.<html/>");
+                    break;
+                case "week":
+                    desc.setText("<html><h1>Wochenticket</h1><br/>Eine ganze Woche Gültig<br/>Preis 24,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Wochenticket fahren sie<br/>ganz einfach und günsitg<br/>die ganze Woche lang.<html/>");
+                    break;
+                case "month":
+                    desc.setText("<html><h1>Monatsticket</h1><br/>Eine ganze Woche Gültig<br/>Preis 24,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Wochenticket fahren sie<br/>ganz einfach und günsitg<br/>die ganze Woche lang.<html/>");
+                    break;
+                case "year":
+                    desc.setText("<html><h1>Jahresticket</h1><br/>Eine ganze Woche Gültig<br/>Preis 24,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Wochenticket fahren sie<br/>ganz einfach und günsitg<br/>die ganze Woche lang.<html/>");
+                    break;
+            }
+
+
+        }
+
+    }
+
+    //Refresh Label
+    class TimedFocus implements ChangeListener{
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            // TODO Auto-generated method stub
+            switch(zeitgruppe.getSelection().getActionCommand()){
+                case "day":
+                    desc.setText("<html><h1>Tagesticket</h1><br/>Einen ganzen Tag Gültig<br/>Preis 14,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Tagesticket fahren sie<br/>ganz einfach und günsitg<br/>den ganzen tag lang.<html/>");
+                    break;
+                case "week":
+                    desc.setText("<html><h1>Wochenticket</h1><br/>Eine ganze Woche Gültig<br/>Preis 24,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Wochenticket fahren sie<br/>ganz einfach und günsitg<br/>die ganze Woche lang.<html/>");
+                    break;
+                case "month":
+                    desc.setText("<html><h1>Monatsticket</h1><br/>Einen ganzen Monat Gültig<br/>Preis 39,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Monatsticket fahren sie<br/>ganz einfach und günsitg<br/>den ganzen Monat lang.<html/>");
+                    break;
+                case "year":
+                    desc.setText("<html><h1>Jahresticket</h1><br/>Ein ganzes Jahr Gültig<br/>Preis 59,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Jahresticket fahren sie<br/>ganz einfach und günsitg<br/>ein ganzes Jahr lang.<html/>");
+                    break;
+            }
+        }
+
+    }
+
+    class NormalChanged implements ChangeListener{
+
+        @Override
+        public void stateChanged(ChangeEvent e){
+            switch(currentPage){
+                case "Klasse1":
+                    switch(auswahlgruppe.getSelection().getActionCommand()){
+                        case "einzel":
+                            desc.setText("<html><h1>Klasse 1 Ticket</h1><br/>4 Stationen Fahren<br/>Preis 4€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 1 Ticket<br/>ganz einfach und günsitg<br/>bis zu 4 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        case "vier":
+                            desc.setText("<html><h1>Klasse 1 Ticket</h1><br/>4 Stationen Fahren<br/>Preis 15€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 1 Ticket<br/>ganz einfach und günsitg<br/>bis zu 4 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        case "gruppe":
+                            desc.setText("<html><h1>Klasse 1 Ticket</h1><br/>4 Stationen Fahren<br/>Preis 20€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 1 Ticket<br/>ganz einfach und günsitg<br/>bis zu 4 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        case "family":
+                            desc.setText("<html><h1>Klasse 1 Ticket</h1><br/>4 Stationen Fahren<br/>Preis 10€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 1 Ticket<br/>ganz einfach und günsitg<br/>bis zu 4 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                    }
+                case "Klasse2":
+                    switch(auswahlgruppe.getSelection().getActionCommand()){
+                        case "einzel":
+                            desc.setText("<html><h1>Klasse 2 Ticket</h1><br/>Bis zu 8 Stationen Fahren<br/>Preis 6,50€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 2 Ticket<br/>ganz einfach und günsitg<br/>bis zu 8 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>"); 
+                            break;
+                        case "vier":
+                            desc.setText("<html><h1>Klasse 2 Ticket</h1><br/>Bis zu 8 Stationen Fahren<br/>Preis 24,99€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 2 Ticket<br/>ganz einfach und günsitg<br/>bis zu 8 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        case "gruppe":
+                            desc.setText("<html><h1>Klasse 2 Ticket</h1><br/>Bis zu 8 Stationen Fahren<br/>Preis 30€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 2 Ticket<br/>ganz einfach und günsitg<br/>bis zu 8 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        case "family":
+                            desc.setText("<html><h1>Klasse 2 Ticket</h1><br/>Bis zu 8 Stationen Fahren<br/>Preis 20€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 2 Ticket<br/>ganz einfach und günsitg<br/>bis zu 8 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                }
+                case "Klasse3":
+
+
+                break;
+            }
+        }
     }
 
 
