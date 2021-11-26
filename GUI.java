@@ -1,15 +1,10 @@
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.xml.namespace.QName;
-
-import org.w3c.dom.css.RGBColor;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 
 /* NOTES
@@ -107,10 +102,17 @@ public class GUI implements java.awt.event.ActionListener {
             auswahlgruppe.add(three);
             auswahlgruppe.add(four);
 
+            one.setSelected(true);
+            one.setActionCommand("einzel");
+            two.setActionCommand("vier");
+            three.setActionCommand("gruppe");
+            four.setActionCommand("family");
+
             one.addChangeListener(new NormalChanged());
             two.addChangeListener(new NormalChanged());
             three.addChangeListener(new NormalChanged());
             four.addChangeListener(new NormalChanged());
+            
 
             zeitgruppe.add(day);
             zeitgruppe.add(week);
@@ -124,11 +126,7 @@ public class GUI implements java.awt.event.ActionListener {
             alignTimes.add(month);
             alignTimes.add(year);
 
-            one.setSelected(true);
-            one.setActionCommand("einzel");
-            two.setActionCommand("vier");
-            three.setActionCommand("gruppe");
-            four.setActionCommand("family");
+
 
             day.addChangeListener(new TimedFocus());
             week.addChangeListener(new TimedFocus());
@@ -320,7 +318,7 @@ public class GUI implements java.awt.event.ActionListener {
 
     }
 
-    class NormalChanged implements ChangeListener{
+     class NormalChanged implements ChangeListener{
 
         @Override
         public void stateChanged(ChangeEvent e){
@@ -362,6 +360,6 @@ public class GUI implements java.awt.event.ActionListener {
             }
         }
     }
+}
 
 
-    }
