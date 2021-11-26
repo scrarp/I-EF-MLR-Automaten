@@ -42,7 +42,9 @@ public class GUI implements java.awt.event.ActionListener {
         JButton ClassTwo = new JButton("Ticket Klasse 2");
         ClassTwo.addActionListener(new TriggerClassTwo());
 
-        desc = new JLabel("Bitte wählen sie \n" + "eine Klasse und Art aus.");
+        //desription text
+        desc = new JLabel("<html>Bitte wählen sie eine Klasse<br/>und Art aus.<br/>Hello world<html/>");
+        //desc.setPreferredSize(new Dimension(220, 400));
 
 
         //Beschreibung
