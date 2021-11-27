@@ -188,17 +188,6 @@ public class GUI implements java.awt.event.ActionListener {
 
     }
 
-    public void RemovePanel(JPanel panel) {
-
-        panel.setVisible(false);
-
-    }
-
-    public void ShowPanel(JPanel panel) {
-
-        panel.setVisible(true);
-
-    }
 //Jaro
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -226,10 +215,12 @@ public class GUI implements java.awt.event.ActionListener {
 
                 if(confirm == JOptionPane.YES_OPTION) {
                     money = money - preisint;
-                    System.out.println(money);
+                    System.out.println("Benutzer kauft ein "+ type + "ticket für " + preis + "€.");
+                    System.out.println("Geld verbleibt: " + money + "€");
                     return true;
                 }
                 else {
+                    System.out.println("Benutzer bricht den Kauf eines "+ type + "tickets für " + preis + "€ ab.");
                     return false;
                 }
         }
@@ -275,12 +266,12 @@ public class GUI implements java.awt.event.ActionListener {
                     case "Klasse2":
                         switch(auswahlgruppe.getSelection().getActionCommand()){
                             case "einzel":
-                            pre = "6,5";
+                            pre = "6";
                             typ = "Einzel";
                                 break;
                             case "vier":
                             typ = "Vierer";
-                            pre = "24,99";
+                            pre = "25";
                                 break;
                             case "gruppe":
                             typ = "Gruppen";
@@ -296,11 +287,11 @@ public class GUI implements java.awt.event.ActionListener {
                     case "Klasse3":
                         switch(auswahlgruppe.getSelection().getActionCommand()){ 
                             case "einzel":
-                            pre = "9,99";
+                            pre = "10";
                             typ = "Einzel";
                                 break;
                             case "vier":
-                            pre = "39,99";
+                            pre = "40";
                             typ = "Vierer";
                                 break;
                             case "gruppe":
@@ -313,6 +304,26 @@ public class GUI implements java.awt.event.ActionListener {
                                                             break;
                             
                             
+                            }
+                            break;
+                    case "KlasseTimed":
+                            switch(zeitgruppe.getSelection().getActionCommand()){
+                                case "day":
+                                    typ = "Tages";
+                                    pre = "15";
+                                case "week":
+                                    typ = "Wochen";
+                                    pre = "25";
+                                break;
+                                case "month":
+                                    typ = "Monats";
+                                    pre = "40";
+                                break;
+                                case "year":
+                                    typ = "Jahres";
+                                    pre = "60";
+
+                                break;
                             }
                             break;
                             
@@ -482,6 +493,26 @@ public class GUI implements java.awt.event.ActionListener {
                         
                     }
         }
+    }
+
+
+    //Funktionen zur vereinfachung
+
+    public void RemovePanel(JPanel panel) {
+
+        panel.setVisible(false);
+
+    }
+
+    public void ShowPanel(JPanel panel) {
+
+        panel.setVisible(true);
+
+    }
+
+    //Start Funktion
+    public void Automat(){
+
     }
 
 
