@@ -24,7 +24,7 @@ public class GUI implements java.awt.event.ActionListener {
     //--------------------------------------//
 
 
-    private String currentPage;
+    private String currentPage = "Klasse1";
     
     //Swing components
     private int preis = 5;
@@ -52,7 +52,6 @@ public class GUI implements java.awt.event.ActionListener {
         button = new JButton("Jetzt Kaufen");
         button.addActionListener(new Kauf());
         button.setBackground(cnotready);
-        currentPage = "Klasse1";
 
         JButton ClassOne = new JButton("Ticket Klasse 1");
         ClassOne.addActionListener(new TriggerClassOne());
@@ -213,17 +212,123 @@ public class GUI implements java.awt.event.ActionListener {
         //label.setText("Number of clicks:" + count);
     }
 
+    public boolean confirm(String type, String preis){
+
+        int preisint = Integer.valueOf(preis);
+        if(money > preisint) {
+            
+            
+            int confirm;
+            confirm = JOptionPane.showOptionDialog(frame, "Sie sind dabei ein " + type + "ticket für " + preis + "€ zu kaufen" + "\nFortfahren?","Einkauf",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE, null, 
+                new String[]{"Ja", "Nein"}, "B");
+
+                if(confirm == JOptionPane.YES_OPTION) {
+                    money = money - preisint;
+                    System.out.println(money);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+        }
+        else{
+            JOptionPane.showMessageDialog(frame, "Fehler bei der Transaktion", "Fehler", JOptionPane.INFORMATION_MESSAGE);
+        }
+        return false;
+        
+    }
+
     
     //Button Trigger
 
     //Kauf
     class Kauf implements java.awt.event.ActionListener{
         public void actionPerformed(ActionEvent e){
-            if(auswahlgruppe.getSelection().getActionCommand() == "einzel"){
-                RemovePanel(panel); 
+            String pre;
+            pre = "0";
+            String typ;
+            typ = "error";
+                
+                switch(currentPage){
+                    case "Klasse1":
+                        switch(auswahlgruppe.getSelection().getActionCommand()){
+                            case "einzel":
+                                pre = "4";
+                                typ = "Einzel";
+                                break;
+                            case "vier":
+                            typ = "Vierer";
+                            pre = "15";
+                                                            break;
+                            case "gruppe":
+                            typ = "Gruppen";
+                            pre = "20";
+                                break;
+                            case "family":
+                            typ = "Familien";
+                            pre = "10";
+                                break;
+                        }
+                        break;
+                    case "Klasse2":
+                        switch(auswahlgruppe.getSelection().getActionCommand()){
+                            case "einzel":
+                            pre = "6,5";
+                            typ = "Einzel";
+                                break;
+                            case "vier":
+                            typ = "Vierer";
+                            pre = "24,99";
+                                break;
+                            case "gruppe":
+                            typ = "Gruppen";
+                            pre = "30";
+                                break;
+                            case "family":
+                            typ = "Familien";
+                            pre = "20";
+                                break;
+                        
+                        }
+                        break;
+                    case "Klasse3":
+                        switch(auswahlgruppe.getSelection().getActionCommand()){ 
+                            case "einzel":
+                            pre = "9,99";
+                            typ = "Einzel";
+                                break;
+                            case "vier":
+                            pre = "39,99";
+                            typ = "Vierer";
+                                break;
+                            case "gruppe":
+                            typ = "Gruppen";
+                            pre = "50";
+                                break;
+                            case "family":
+                            typ = "Familien";
+                            pre = "30";
+                                                            break;
+                            
+                            
+                            }
+                            break;
+                            
+                        
             }
+        
+        if(confirm(typ, pre) == true) {
+            System.out.println("Gekauft");
+            JOptionPane.showMessageDialog(frame, "Vielen Dank für ihren Einkauf \n Ihr Ticket wird gedruckt.");
+        }
+        else {
+            System.out.println("Nicht gekauft");
+            JOptionPane.showMessageDialog(frame, "Ihr einkauf wurde abgebrochen");
         }
     }
+}
 
     //Klasse 1
     class TriggerClassOne implements ActionListener {
@@ -338,6 +443,7 @@ public class GUI implements java.awt.event.ActionListener {
                             desc.setText("<html><h1>Klasse 1 Ticket</h1><br/>4 Stationen Fahren<br/>Preis 10€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 1 Ticket<br/>ganz einfach und günsitg<br/>bis zu 4 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
                             break;
                     }
+                    break;
                 case "Klasse2":
                     switch(auswahlgruppe.getSelection().getActionCommand()){
                         case "einzel":
@@ -352,14 +458,33 @@ public class GUI implements java.awt.event.ActionListener {
                         case "family":
                             desc.setText("<html><h1>Klasse 2 Ticket</h1><br/>Bis zu 8 Stationen Fahren<br/>Preis 20€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 2 Ticket<br/>ganz einfach und günsitg<br/>bis zu 8 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
                             break;
-                }
+                    
+                    }
+                    break;
                 case "Klasse3":
-
-
-                break;
-            }
+                    switch(auswahlgruppe.getSelection().getActionCommand()){ 
+                        case "einzel":
+                            desc.setText("<html><h1>Klasse 3 Ticket</h1><br/>Bis zu 15 Stationen Fahren<br/>Preis 9,99€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 3 Ticket<br/>ganz einfach und günsitg<br/>bis zu 15 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        case "vier":
+                            desc.setText("<html><h1>Klasse 3 Ticket</h1><br/>Bis zu 15 Stationen Fahren<br/>Preis 39,99€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 3 Ticket<br/>ganz einfach und günsitg<br/>bis zu 15 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        case "gruppe":
+                            desc.setText("<html><h1>Klasse 3 Ticket</h1><br/>Bis zu 15 Stationen Fahren<br/>Preis 50€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 3 Ticket<br/>ganz einfach und günsitg<br/>bis zu 15 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        case "family":
+                            desc.setText("<html><h1>Klasse 3 Ticket</h1><br/>Bis zu 15 Stationen Fahren<br/>Preis 30€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 3 Ticket<br/>ganz einfach und günsitg<br/>bis zu 15 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
+                            break;
+                        
+                        
+                        }
+                        break;
+                        
+                    }
         }
     }
+
+
 }
 
 
