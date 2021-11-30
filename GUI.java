@@ -50,7 +50,7 @@ public class GUI implements java.awt.event.ActionListener {
     private Color cnotready = new Color(255, 116, 82);
     private Color cerror = new Color(89, 40, 40);
 
-    //img
+    //images
     private Image img1;
     private Image img2;
     private Image img3;
@@ -79,9 +79,8 @@ public class GUI implements java.awt.event.ActionListener {
         JButton ClassFour = new JButton("Langzeittickets");
         ClassFour.addActionListener(new TriggerClassTimed());
 
-        //desription text
+        //description text
         desc = new JLabel("<html>Bitte wählen sie eine Klasse<br/>und Art aus.<br/>Wird geladen...<html/>");
-        //desc.setPreferredSize(new Dimension(220, 400));
 
 
         //Beschreibung
