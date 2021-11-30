@@ -6,7 +6,10 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import java.awt.image.BufferedImage;
 
 
 /* NOTES
@@ -54,12 +57,14 @@ public class GUI implements java.awt.event.ActionListener {
     private Image img1;
     private Image img2;
     private Image img3;
+    private Image logo;
+    private Image logo_w;
     
 
     
     
     
-    public GUI() {
+    public GUI() throws IOException {
         //creates Window        
         frame = new JFrame();
         
@@ -110,6 +115,10 @@ public class GUI implements java.awt.event.ActionListener {
 
             idlePanel = new JPanel();
             idlePanel.setLayout(new GridLayout(1, 1));
+
+           
+
+              
 
             //auswahlgruppe = new ButtonGroup();
             auswahlgruppe.add(one);
@@ -175,6 +184,12 @@ public class GUI implements java.awt.event.ActionListener {
         Color lightBlue = new Color(54, 168, 255);
         topPanel.setBackground(lightBlue);
         alignTop.setBackground(lightBlue);
+
+        BufferedImage logo_w = ImageIO.read(new File("resources/SVB_w_sxx.png"));
+
+        JLabel toplogo = new JLabel(new ImageIcon(logo_w));
+        //toplogo.setPreferredSize(new Dimension(20, 20));
+        topPanel.add(toplogo, BorderLayout.WEST);
         topPanel.add(alignTop, BorderLayout.CENTER);
         topPanel.setPreferredSize(new Dimension(800, 50));
 
@@ -202,7 +217,7 @@ public class GUI implements java.awt.event.ActionListener {
 
     
     
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         //main methode for running
         new GUI();
         new GUI().idle();
@@ -240,6 +255,7 @@ public class GUI implements java.awt.event.ActionListener {
             idleshow.setIcon(new ImageIcon(img1));
         }
     }
+
 
 
 //Jaro
