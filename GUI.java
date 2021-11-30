@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -5,6 +6,7 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.concurrent.TimeUnit;
 
 
 /* NOTES
@@ -25,6 +27,7 @@ public class GUI implements java.awt.event.ActionListener {
 
 
     private String currentPage = "Klasse1";
+    private Boolean isidle = true;
     
     //Swing components
     private int preis = 5;
@@ -37,14 +40,25 @@ public class GUI implements java.awt.event.ActionListener {
     private ButtonGroup zeitgruppe = new ButtonGroup();
     private JPanel alignRadio;
     private JPanel alignTimes;
+    private JPanel rightTextPanel;
+    private JPanel leftPanel;
+    private JPanel topPanel;
+    private JPanel idlePanel;
 
     //colors
     private Color cconfirm = new Color(157, 255, 156);
     private Color cnotready = new Color(255, 116, 82);
     private Color cerror = new Color(89, 40, 40);
+
+    //img
+    private Image img1;
+    private Image img2;
+    private Image img3;
     
 
-
+    
+    
+    
     public GUI() {
         //creates Window        
         frame = new JFrame();
@@ -66,18 +80,18 @@ public class GUI implements java.awt.event.ActionListener {
         ClassFour.addActionListener(new TriggerClassTimed());
 
         //desription text
-        desc = new JLabel("<html>Bitte wählen sie eine Klasse<br/>und Art aus.<br/>Hello world<html/>");
+        desc = new JLabel("<html>Bitte wählen sie eine Klasse<br/>und Art aus.<br/>Wird geladen...<html/>");
         //desc.setPreferredSize(new Dimension(220, 400));
 
 
         //Beschreibung
-        JPanel rightTextPanel = new JPanel();
+        rightTextPanel = new JPanel();
         rightTextPanel.add(desc);
         rightTextPanel.setPreferredSize(new Dimension(220, 400));
 
 
         //Auswahl
-        JPanel leftPanel = new JPanel();
+        leftPanel = new JPanel();
         leftPanel.setPreferredSize(new Dimension(220, 400));
         JLabel auswahl = new JLabel("Bitte wählen sie eine aus:");
         leftPanel.add(auswahl);
@@ -148,7 +162,7 @@ public class GUI implements java.awt.event.ActionListener {
         alignTimes.setVisible(false);
 
         //Top Bar
-        JPanel topPanel = new JPanel();
+        topPanel = new JPanel();
         JPanel alignTop = new JPanel();
         alignTop.add(ClassOne);
         alignTop.add(ClassTwo);
@@ -178,18 +192,51 @@ public class GUI implements java.awt.event.ActionListener {
         frame.setResizable(canrezize);
         //frame.setSize(1000, 1000);
         frame.pack();
-        frame.setVisible(true);
+        frame.setVisible(false);
         
     }
 
-    public void idle(){
-
-    }
     
-    public static void main(String[] args) {
+    
+    public static void main(String[] args) throws InterruptedException {
         //main methode for running
         new GUI();
+        new GUI().idle();
+        
     }
+
+    public void idle() throws InterruptedException{
+        isidle = true;
+        RemovePanel(panel);
+        RemovePanel(leftPanel);
+        RemovePanel(rightTextPanel);
+        RemovePanel(topPanel);
+        JButton idleshow = new JButton();
+        idleshow.setPreferredSize(new Dimension(850, 400));
+        try {
+            img1 = ImageIO.read(getClass().getResource("resources/image1.png"));
+            img2 = ImageIO.read(getClass().getResource("resources/image2.png"));
+            img3 = ImageIO.read(getClass().getResource("resources/image3.png"));
+            idleshow.setIcon(new ImageIcon(img1));
+          } catch (Exception ex) {
+            System.out.println(ex);
+          }
+        idleshow.addActionListener(new IdleClick());
+        idlePanel = new JPanel();
+        idlePanel.add(idleshow);
+        frame.add(idlePanel);
+        frame.pack();
+        frame.setVisible(true);
+        while(isidle = true){
+            TimeUnit.SECONDS.sleep(5);
+            idleshow.setIcon(new ImageIcon(img2));
+            TimeUnit.SECONDS.sleep(5);
+            idleshow.setIcon(new ImageIcon(img3));
+            TimeUnit.SECONDS.sleep(5);
+            idleshow.setIcon(new ImageIcon(img1));
+        }
+    }
+
 
 //Jaro
     @Override
@@ -409,6 +456,21 @@ public class GUI implements java.awt.event.ActionListener {
             }
 
 
+        }
+
+    }
+
+    class IdleClick implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            ShowPanel(panel);
+            ShowPanel(leftPanel);
+            ShowPanel(rightTextPanel);
+            ShowPanel(topPanel);
+            RemovePanel(idlePanel);
+            isidle = false;
+            button.setBackground(cconfirm);
         }
 
     }
