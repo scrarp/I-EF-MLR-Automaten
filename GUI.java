@@ -181,11 +181,14 @@ public class GUI implements java.awt.event.ActionListener {
         frame.setVisible(true);
         
     }
+
+    public void idle(){
+
+    }
     
     public static void main(String[] args) {
         //main methode for running
         new GUI();
-
     }
 
 //Jaro
@@ -510,10 +513,6 @@ public class GUI implements java.awt.event.ActionListener {
 
     }
 
-    //Start Funktion
-    public void Automat(){
-
-    }
 
 
 }
