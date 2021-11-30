@@ -108,7 +108,9 @@ public class GUI implements java.awt.event.ActionListener {
             JRadioButton month = new JRadioButton("Monatsticket");
             JRadioButton year = new JRadioButton("Jahresticket");
 
-            
+            idlePanel = new JPanel();
+            idlePanel.setLayout(new GridLayout(1, 1));
+
             //auswahlgruppe = new ButtonGroup();
             auswahlgruppe.add(one);
             auswahlgruppe.add(two);
@@ -139,6 +141,8 @@ public class GUI implements java.awt.event.ActionListener {
             alignTimes.add(month);
             alignTimes.add(year);
 
+
+            
 
 
             day.addChangeListener(new TimedFocus());
@@ -222,7 +226,7 @@ public class GUI implements java.awt.event.ActionListener {
             System.out.println(ex);
           }
         idleshow.addActionListener(new IdleClick());
-        idlePanel = new JPanel();
+             
         idlePanel.add(idleshow);
         frame.add(idlePanel);
         frame.pack();
