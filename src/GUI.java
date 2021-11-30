@@ -4,12 +4,13 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.awt.image.BufferedImage;
+
+import static com.sun.java.accessibility.util.AWTEventMonitor.addMouseMotionListener;
 
 
 /* NOTES
@@ -22,7 +23,7 @@ import java.awt.image.BufferedImage;
  * @author Jaro Kaulmann    *
  * @version 2021.11.26      *
  * ************************ */
-public class GUI implements java.awt.event.ActionListener {
+public class GUI implements ActionListener {
 
     //--------------rezisable---------------//
     public boolean canrezize = false;
@@ -31,6 +32,8 @@ public class GUI implements java.awt.event.ActionListener {
 
     private String currentPage = "Klasse1";
     private Boolean isidle = true;
+    private int idletimer = 5000;
+    private Boolean idlecount = false;
 
     //Swing components
     private int preis = 5;
@@ -115,8 +118,6 @@ public class GUI implements java.awt.event.ActionListener {
 
         idlePanel = new JPanel();
         idlePanel.setLayout(new GridLayout(1, 1));
-
-
 
 
 
@@ -221,10 +222,12 @@ public class GUI implements java.awt.event.ActionListener {
 
     //Die Main methode die den gesammten Ablauf regelt
     public static void main(String[] args) throws InterruptedException, IOException {
-        new GUI();
-        new GUI().idle();
 
+        new GUI();
+
+        new GUI().idle();
     }
+
 
     //Die Idle methode wird aufgerufen, um den Startbildschirm anzuzeigen
     public void idle() throws InterruptedException{
@@ -257,6 +260,8 @@ public class GUI implements java.awt.event.ActionListener {
             TimeUnit.SECONDS.sleep(5);
             idleshow.setIcon(new ImageIcon(img1));
         }
+
+
     }
 
 
@@ -481,6 +486,7 @@ public class GUI implements java.awt.event.ActionListener {
             ShowPanel(rightTextPanel);
             ShowPanel(topPanel);
             RemovePanel(idlePanel);
+
             isidle = false;
             button.setBackground(cconfirm);
         }
@@ -585,6 +591,7 @@ public class GUI implements java.awt.event.ActionListener {
         panel.setVisible(true);
 
     }
+
 
 
 

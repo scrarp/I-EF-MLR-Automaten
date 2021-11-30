@@ -422,7 +422,7 @@ public class GUI implements java.awt.event.ActionListener {
 
     //Klasse 3
     class TriggerClassThree implements java.awt.event.ActionListener {
-        public void actionPerformed(ActionEvent e){
+        public void actionPerformed(ActionEvent e) {
             currentPage = "Klasse3";
             button.setBackground(cconfirm);
             ShowPanel(panel);
@@ -430,7 +430,6 @@ public class GUI implements java.awt.event.ActionListener {
             alignTimes.setVisible(false);
             desc.setText("<html><h1>Klasse 3 Ticket</h1><br/>Bis zu 15 Stationen Fahren<br/>Preis 9,99€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 3 Ticket<br/>ganz einfach und günsitg<br/>bis zu 15 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
         }
-
     }
 
     //Langzeitticket
@@ -580,6 +579,9 @@ public class GUI implements java.awt.event.ActionListener {
 
 
 
+    class resetIdle{
+        System.out.println("Hello");
+    }
 }
 
 
