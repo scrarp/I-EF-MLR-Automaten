@@ -188,7 +188,6 @@ public class GUI implements java.awt.event.ActionListener {
         try {
             logo_w = ImageIO.read(getClass().getResource("resources/SVB_w_sxx.png"));
         } catch (Exception ex) {
-            System.out.println(ex);
         }
 
         JLabel toplogo = new JLabel(new ImageIcon(logo_w));
