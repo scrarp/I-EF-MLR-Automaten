@@ -219,14 +219,14 @@ public class GUI implements java.awt.event.ActionListener {
     }
 
 
-
+    //Die Main methode die den gesammten Ablauf regelt
     public static void main(String[] args) throws InterruptedException, IOException {
-        //main methode for running
         new GUI();
         new GUI().idle();
 
     }
 
+    //Die Idle methode wird aufgerufen, um den Startbildschirm anzuzeigen
     public void idle() throws InterruptedException{
         isidle = true;
         RemovePanel(panel);
@@ -261,31 +261,21 @@ public class GUI implements java.awt.event.ActionListener {
 
 
 
-    //Jaro
+    //Unnütze methode
     @Override
     public void actionPerformed(ActionEvent e) {
-        //action when button pressed
-        //count++;
-
-        if(auswahlgruppe.getSelection().getActionCommand() == "einzel"){
-            RemovePanel(panel);
-        }
-
-        //label.setText("Number of clicks:" + count);
     }
 
-    public boolean confirm(String type, String preis){
 
+    //Diese Funktion wird benutzt um dem Nutzer eine Bestätigungsnachricht anzuzeigen
+    public boolean confirm(String type, String preis){
         int preisint = Integer.valueOf(preis);
         if(money > preisint) {
-
-
             int confirm;
             confirm = JOptionPane.showOptionDialog(frame, "Sie sind dabei ein " + type + "ticket für " + preis + "€ zu kaufen" + "\nFortfahren?","Einkauf",
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.WARNING_MESSAGE, null,
                     new String[]{"Ja", "Nein"}, "B");
-
             if(confirm == JOptionPane.YES_OPTION) {
                 money = money - preisint;
                 System.out.println("Benutzer kauft ein "+ type + "ticket für " + preis + "€.");
@@ -301,13 +291,13 @@ public class GUI implements java.awt.event.ActionListener {
             JOptionPane.showMessageDialog(frame, "Fehler bei der Transaktion", "Fehler", JOptionPane.INFORMATION_MESSAGE);
         }
         return false;
-
     }
 
 
     //Button Trigger
 
     //Kauf
+    //Diese Klasse wird aufgerufen, wenn der ActionListener der Kauf knopfes aktiviert wird.
     class Kauf implements java.awt.event.ActionListener{
         public void actionPerformed(ActionEvent e){
             String pre;
@@ -336,6 +326,7 @@ public class GUI implements java.awt.event.ActionListener {
                             break;
                     }
                     break;
+
                 case "Klasse2":
                     switch(auswahlgruppe.getSelection().getActionCommand()){
                         case "einzel":
@@ -357,6 +348,7 @@ public class GUI implements java.awt.event.ActionListener {
 
                     }
                     break;
+
                 case "Klasse3":
                     switch(auswahlgruppe.getSelection().getActionCommand()){
                         case "einzel":
@@ -375,10 +367,9 @@ public class GUI implements java.awt.event.ActionListener {
                             typ = "Familien";
                             pre = "30";
                             break;
-
-
                     }
                     break;
+
                 case "KlasseTimed":
                     switch(zeitgruppe.getSelection().getActionCommand()){
                         case "day":
@@ -399,8 +390,6 @@ public class GUI implements java.awt.event.ActionListener {
                             break;
                     }
                     break;
-
-
             }
 
             if(confirm(typ, pre) == true) {
@@ -415,6 +404,7 @@ public class GUI implements java.awt.event.ActionListener {
     }
 
     //Klasse 1
+    //Diese Klasse wird beim Klicken auf den Menüpunkt Klasse 1 aufgerufen
     class TriggerClassOne implements ActionListener {
         public void actionPerformed(ActionEvent e){
             currentPage = "Klasse1";
@@ -424,10 +414,10 @@ public class GUI implements java.awt.event.ActionListener {
             alignTimes.setVisible(false);
             desc.setText("<html><h1>Klasse 1 Ticket</h1><br/>4 Stationen Fahren<br/>Preis 4€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 1 Ticket<br/>ganz einfach und günsitg<br/>bis zu 4 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
         }
-
     }
 
     //Klasse 2
+    //Diese Klasse wird beim Klicken auf den Menüpunkt Klasse 2 aufgerufen
     class TriggerClassTwo implements java.awt.event.ActionListener {
         public void actionPerformed(ActionEvent e){
             currentPage = "Klasse2";
@@ -437,10 +427,10 @@ public class GUI implements java.awt.event.ActionListener {
             alignTimes.setVisible(false);
             desc.setText("<html><h1>Klasse 2 Ticket</h1><br/>Bis zu 8 Stationen Fahren<br/>Preis 6,50€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 2 Ticket<br/>ganz einfach und günsitg<br/>bis zu 8 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
         }
-
     }
 
     //Klasse 3
+    //Diese Klasse wird beim Klicken auf den Menüpunkt Klasse 3 aufgerufen
     class TriggerClassThree implements java.awt.event.ActionListener {
         public void actionPerformed(ActionEvent e){
             currentPage = "Klasse3";
@@ -450,10 +440,10 @@ public class GUI implements java.awt.event.ActionListener {
             alignTimes.setVisible(false);
             desc.setText("<html><h1>Klasse 3 Ticket</h1><br/>Bis zu 15 Stationen Fahren<br/>Preis 9,99€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 3 Ticket<br/>ganz einfach und günsitg<br/>bis zu 15 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
         }
-
     }
 
     //Langzeitticket
+    //Diese Klasse wird beim Klicken auf den Menüpunkt Langzeittickets aufgerufen
     class TriggerClassTimed implements java.awt.event.ActionListener {
         public void actionPerformed(ActionEvent e){
             currentPage = "KlasseTimed";
@@ -477,12 +467,11 @@ public class GUI implements java.awt.event.ActionListener {
                     desc.setText("<html><h1>Jahresticket</h1><br/>Eine ganze Woche Gültig<br/>Preis 24,99€<br/>Gültig ab Kauf<br/> <br/>Mit dem Wochenticket fahren sie<br/>ganz einfach und günsitg<br/>die ganze Woche lang.<html/>");
                     break;
             }
-
-
         }
-
     }
 
+    //Idle
+    //Diese Klasse wird aufgerufen, wenn der Benutzer den Startbildschirm "berührt"
     class IdleClick implements ActionListener{
 
         @Override
@@ -495,10 +484,11 @@ public class GUI implements java.awt.event.ActionListener {
             isidle = false;
             button.setBackground(cconfirm);
         }
-
     }
 
     //Refresh Label
+    //Diese Klasse fungiert zum Aktualisieren der Ticketbeschreibungen(Langzeit) und wird aufgerufen, wenn die Art
+    //von ticket in der Zeitgruppe geändert wird
     class TimedFocus implements ChangeListener{
 
         @Override
@@ -519,9 +509,10 @@ public class GUI implements java.awt.event.ActionListener {
                     break;
             }
         }
-
     }
 
+    //Diese Klasse aktualisiert die Beschreibungen der Klasse 1 - 3 Tickets, sollte die Auswahl in der
+    //Buttongroup geändert werden.
     class NormalChanged implements ChangeListener{
 
         @Override
@@ -557,7 +548,6 @@ public class GUI implements java.awt.event.ActionListener {
                         case "family":
                             desc.setText("<html><h1>Klasse 2 Ticket</h1><br/>Bis zu 8 Stationen Fahren<br/>Preis 20€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 2 Ticket<br/>ganz einfach und günsitg<br/>bis zu 8 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
                             break;
-
                     }
                     break;
                 case "Klasse3":
@@ -574,17 +564,15 @@ public class GUI implements java.awt.event.ActionListener {
                         case "family":
                             desc.setText("<html><h1>Klasse 3 Ticket</h1><br/>Bis zu 15 Stationen Fahren<br/>Preis 30€<br/>Gültig ab Fahrtantritt<br/> <br/>Mit dem Klasse 3 Ticket<br/>ganz einfach und günsitg<br/>bis zu 15 Stationen Fahren.<br/>Als Einzelticket, Gruppenticket,<br/>4er Ticket und Familienticket<br/>erhältich.<html/>");
                             break;
-
-
                     }
                     break;
-
             }
         }
     }
 
 
     //Funktionen zur vereinfachung
+    //Diese funktionen sind relativ unwichtig
 
     public void RemovePanel(JPanel panel) {
 
