@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="Ticketautomat:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/Ticketautomat_jar</output-path>
+    <output-path>D:/Dev/Java/Ticketautomat/out/artifacts/Ticketautomat_jar</output-path>
     <root id="archive" name="Ticketautomat.jar">
       <element id="module-output" name="Ticketautomat" />
     </root>
